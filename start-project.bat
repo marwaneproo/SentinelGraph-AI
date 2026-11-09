@@ -4,7 +4,7 @@ pushd "%~dp0"
 
 echo.
 echo SentinelGraph-AI startup
-echo ------------------------
+echo ----
 
 where docker >nul 2>&1
 if errorlevel 1 (
