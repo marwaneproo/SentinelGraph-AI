@@ -9,6 +9,7 @@ from backend.app.engine.rules.distributed_brute_force import evaluate_distribute
 from backend.app.engine.rules.suspicious_patterns import evaluate_suspicious_patterns
 from backend.app.engine.detector import threat_detector
 
+
 def test_rule_1_brute_force():
     now = datetime.now(timezone.utc).isoformat()
     logs = [
