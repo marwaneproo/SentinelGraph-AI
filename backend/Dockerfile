@@ -9,6 +9,7 @@ WORKDIR /workspace
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
+    
 
 # The Compose build context is ./backend. Keep the package under /workspace/backend
 # so imports such as backend.app.main resolve the same way they do in development.
