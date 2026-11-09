@@ -40,6 +40,7 @@ async def test_viewer_can_read_logs_and_alerts(async_client: AsyncClient, viewer
         "/api/v1/logs",
         headers={"Authorization": f"Bearer {viewer_token}"}
     )
+    
     assert logs_res.status_code == 200
     
     # Viewer can access alerts
