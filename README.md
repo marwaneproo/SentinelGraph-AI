@@ -587,9 +587,9 @@ The real value comes from understanding the relationships between events, identi
 **SentinelGraph-AI brings together document-oriented storage, graph intelligence, deterministic threat detection, and local AI-assisted analysis to demonstrate how raw security telemetry can become structured, connected, and actionable cyber intelligence.**
 
 <p align="center">
-  **From Security Events to Threat Intelligence.**
+  From Security Events to Threat Intelligence.
   <br/>
-  **From Isolated Logs to Connected Insights.**
+  From Isolated Logs to Connected Insights.
 </p>
 
 ---
