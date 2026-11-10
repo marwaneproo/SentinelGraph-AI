@@ -574,7 +574,7 @@ These directions provide opportunities to evolve the prototype into a more compr
 | Frontend | React / TypeScript |
 | AI Integration | Ollama |
 | Deployment Technology | Docker / Docker Compose |
-| Academic Context | 4IIR — NoSQL Application Development |
+| Academic Context | 4IIR NoSQL Application Development |
 
 ---
 
