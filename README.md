@@ -2,7 +2,7 @@
 ### Intelligent Security Monitoring, Threat Detection & Graph-Based Investigation
 
 <p align="center">
-  **Turning Raw Security Events into Actionable Cyber Intelligence.**
+  Turning Raw Security Events into Actionable Cyber Intelligence.
 </p>
 
 SentinelGraph-AI is an AI-powered Mini Security Information and Event Management (SIEM) platform designed to help organizations monitor their information systems, detect suspicious activities, investigate cyber threats, and transform security logs into actionable intelligence.
@@ -594,4 +594,4 @@ The real value comes from understanding the relationships between events, identi
 
 ---
 
-*SentinelGraph-AI — An academic project exploring the intersection of NoSQL engineering, cybersecurity, graph analytics, and artificial intelligence.*
+*SentinelGraph-AI An academic project exploring the intersection of NoSQL engineering, cybersecurity, graph analytics, and artificial intelligence.*
