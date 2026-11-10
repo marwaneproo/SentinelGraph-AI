@@ -11,6 +11,76 @@ By combining **log analytics, rule-based threat detection, graph-based investiga
 
 ---
 
+## Project Screenshots
+
+### 1. System Architecture
+
+The following diagram illustrates the overall SentinelGraph-AI architecture, highlighting the main components, technologies, data flows, and interactions between the application layers.
+
+<p align="center">
+  <img src="photo/architecture.png" alt="SentinelGraph-AI System Architecture" width="100%" />
+</p>
+
+---
+
+### 2. Application Interface & Security Monitoring
+
+The following screenshots showcase the application's main interface, centralized log management, security alerts, and monitoring capabilities.
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <strong>Security Dashboard</strong><br/><br/>
+      <img src="photo/dashboard.png" alt="Security Dashboard" width="100%" />
+    </td>
+    <td width="50%" align="center">
+      <strong>Centralized Log Management</strong><br/><br/>
+      <img src="photo/logs.png" alt="Centralized Logs" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <strong>Security Alerts</strong><br/><br/>
+      <img src="photo/alerts.png" alt="Security Alerts" width="100%" />
+    </td>
+    <td width="50%" align="center">
+      <strong>Alert Investigation</strong><br/><br/>
+      <img src="photo/alerts2.png" alt="Alert Investigation" width="100%" />
+    </td>
+  </tr>
+</table>
+
+---
+
+### 3. Threat Intelligence, Detection & AI Analysis
+
+This section presents the security intelligence capabilities, including threat investigation, detection mechanisms, infrastructure monitoring, and AI-powered security analysis.
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <strong>Threat Intelligence</strong><br/><br/>
+      <img src="photo/threat.png" alt="Threat Intelligence" width="100%" />
+    </td>
+    <td width="50%" align="center">
+      <strong>AI Security Analysis</strong><br/><br/>
+      <img src="photo/ai.png" alt="AI Security Analysis" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <strong>Server Monitoring</strong><br/><br/>
+      <img src="photo/server.png" alt="Server Monitoring" width="100%" />
+    </td>
+    <td width="50%" align="center">
+      <strong>Threat Detection Engine</strong><br/><br/>
+      <img src="photo/detection.png" alt="Threat Detection Engine" width="100%" />
+    </td>
+  </tr>
+</table>
+
+---
+
 ## 1. The Problem: Security Visibility Is an Enterprise Challenge
 
 Modern organizations depend on interconnected information systems, servers, applications, user accounts, and network infrastructures. Every interaction generates valuable security information.
