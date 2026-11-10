@@ -1,148 +1,527 @@
 # SentinelGraph-AI
+### Intelligent Security Monitoring, Threat Detection & Graph-Based Investigation
 
-SentinelGraph-AI is an academic mini-SIEM that collects security logs, evaluates detection rules, manages alerts, and explores relationships between indicators and assets.
+<p align="center">
+  **Turning Raw Security Events into Actionable Cyber Intelligence.**
+</p>
 
-## Architecture
+SentinelGraph-AI is an AI-powered Mini Security Information and Event Management (SIEM) platform designed to help organizations monitor their information systems, detect suspicious activities, investigate cyber threats, and transform security logs into actionable intelligence.
 
-- **Frontend:** React 19, TypeScript, Vite, and Nginx.
-- **Backend:** FastAPI with JWT authentication and role-based API dependencies.
-- **MongoDB:** Stores users, servers, rules, logs, alerts, analyses, and audit records as operational documents.
-- **Neo4j:** Models IP, user, server, event, and alert relationships for graph investigation.
-- **Ollama:** Optional local model endpoint for generated analyses. If it is unavailable, the backend returns a clearly marked deterministic rule-based advisory.
+By combining **log analytics, rule-based threat detection, graph-based investigation, and AI-assisted security analysis**, SentinelGraph-AI provides a unified environment for understanding security events and identifying potentially dangerous relationships across users, IP addresses, servers, and incidents.
 
-MongoDB is the primary record store because the application ingests and filters varied event documents. Neo4j complements it with relationship traversals that are awkward to express as document queries. This project is an educational prototype, not a certified or production-hardened SIEM.
+---
 
-## Features
+## 1. The Problem: Security Visibility Is an Enterprise Challenge
 
-- Login with Administrator, Security Analyst, and Viewer roles.
-- Normalized log ingestion, filters, pagination, and per-record integrity verification.
-- Six detection families: brute force, unusual IP, off-hours access, privilege escalation, distributed brute force, and suspicious patterns.
-- Alert review, notes, evidence lookup, and status updates.
-- Server inventory and editable detection-rule settings.
-- Dashboard analytics and Neo4j topology, attacker, blast-radius, and attack-path views.
-- Ollama analysis/chat with deterministic offline fallback.
-- Seeded demo users, assets, rules, and sample security telemetry on a new database.
+Modern organizations depend on interconnected information systems, servers, applications, user accounts, and network infrastructures. Every interaction generates valuable security information.
 
-The seeded sample telemetry is illustrative data; it is not live threat intelligence.
+However, collecting security logs is not enough. The real challenge is understanding what these events mean, identifying suspicious patterns, and connecting isolated activities to recognize potential attacks.
 
-## Prerequisites
+Organizations commonly face several security challenges:
 
-- Windows 11 with Docker Desktop installed and running.
-- Docker Compose v2 (bundled with current Docker Desktop).
-- At least 4 GB of available RAM for the containers; more is recommended.
-- Ollama is optional. To use it, run Ollama on the host and pull the model configured in `.env`.
+| Enterprise Challenge | Business and Security Impact |
+|---|---|
+| Fragmented security logs | Events are distributed across multiple systems, making centralized monitoring difficult. |
+| Limited threat visibility | Suspicious activities can remain unnoticed among thousands of legitimate events. |
+| Brute-force attacks | Repeated authentication failures may indicate attempts to compromise user accounts. |
+| Unusual access patterns | Connections from suspicious IP addresses or outside normal working hours can indicate potential threats. |
+| Privilege escalation | Unauthorized changes in access privileges can expose critical organizational resources. |
+| Isolated security events | Individual events may appear harmless while their relationships reveal a coordinated attack. |
+| Manual investigation | Security analysts spend valuable time correlating evidence and understanding incidents. |
+| Delayed response | Late identification of suspicious activities increases organizational exposure. |
 
-Python and Node.js do not need to be installed on Windows; Docker builds both application services.
+**The fundamental problem is not the lack of security data. It is the difficulty of transforming distributed security events into meaningful, connected, and actionable intelligence.**
 
-## One-command startup
+## 2. The Solution: SentinelGraph-AI
 
-From the extracted project folder, open PowerShell and run:
+SentinelGraph-AI addresses these challenges through an integrated security monitoring and investigation architecture.
 
-```powershell
-.\start-project.bat
+The platform follows a complete security intelligence workflow:
+
+1. **Collect:** Centralize security logs from multiple simulated servers and applications.
+2. **Normalize:** Transform heterogeneous events into structured and consistent documents.
+3. **Analyze:** Evaluate incoming events against configurable security detection rules.
+4. **Detect:** Identify suspicious activities and generate structured security alerts.
+5. **Correlate:** Explore relationships between users, IP addresses, servers, events, and alerts through graph analysis.
+6. **Explain:** Use AI-assisted analysis to interpret security evidence and provide investigation insights.
+7. **Monitor:** Present security activity, threat distributions, and incident information through a centralized dashboard.
+
+The objective is to move beyond isolated log monitoring toward a more connected and intelligent approach to security analysis.
+
+## 3. Core Capabilities
+
+### 3.1 Centralized Security Log Management
+
+A unified log management layer provides visibility into security events generated by different infrastructure components.
+
+Capabilities include:
+- Collection and ingestion of security events.
+- Log parsing and normalization.
+- Structured event storage.
+- Filtering, searching, and pagination.
+- Severity and event classification.
+- Source IP, user, and server identification.
+- Per-record integrity verification using SHA-256.
+
+### 3.2 Intelligent Threat Detection
+
+The detection engine evaluates security events against six detection families.
+
+| Detection Rule | Security Objective |
+|---|---|
+| Brute-Force Detection | Identify repeated failed authentication attempts. |
+| Unusual IP Detection | Identify suspicious login sources. |
+| Off-Hours Access | Detect access outside expected working hours. |
+| Privilege Escalation | Identify potentially unauthorized privilege changes. |
+| Distributed Brute Force | Identify coordinated authentication attempts involving multiple sources. |
+| Suspicious Activity Patterns | Identify potentially abnormal sequences of security events. |
+
+Each generated alert contains structured security information, including severity, affected assets, event evidence, timestamps, and investigation details.
+
+### 3.3 Alert Management and Incident Investigation
+
+The alert management module centralizes detected threats and supports analyst investigation.
+
+Key capabilities:
+- Severity classification: Critical, High, Medium, and Low.
+- Alert lifecycle management.
+- Investigation status tracking.
+- Evidence retrieval.
+- Analyst notes.
+- Alert history and contextual information.
+
+The platform distinguishes between detecting a suspicious event and investigating its actual security implications.
+
+### 3.4 Graph-Based Threat Investigation
+
+Security incidents are rarely isolated.
+
+An IP address may target multiple accounts, a compromised user may access several servers, and different alerts may originate from related events.
+
+Traditional document queries are useful for retrieving individual records, but exploring multi-level relationships becomes more complex.
+
+SentinelGraph-AI integrates Neo4j to represent and investigate these relationships.
+
+**Conceptual threat graph:**
+
+```mermaid
+graph TD
+    IP[IP Address]
+    USER[User]
+    SERVER[Server]
+    EVENT[Security Event]
+    ALERT[Security Alert]
+
+    IP -->|GENERATES| EVENT
+    USER -->|TRIGGERS| EVENT
+    SERVER -->|RECORDS| EVENT
+    EVENT -->|PRODUCES| ALERT
+    IP -->|TARGETS| USER
+    USER -->|ACCESSES| SERVER
 ```
 
-On first start, the script creates `.env` from `.env.example` and generates random local Neo4j, JWT, and seeded-account passwords. Keep `.env` private; it is excluded from Git. MongoDB is published only on loopback for this academic single-machine setup; it is not configured for remote or production use. The script then validates Compose, builds the services, waits for their health checks, and prints service status.
+Graph investigation capabilities include:
 
-### URLs
+- Security topology exploration.
+- Repeated attacker identification.
+- Relationship discovery between incidents.
+- Blast-radius investigation.
+- Attack-path exploration.
+- Identification of connected suspicious entities.
 
-- Web application: <http://localhost:3000>
-- FastAPI documentation: <http://localhost:8000/docs>
-- Backend health: <http://localhost:8000/health>
-- Neo4j Browser: <http://localhost:7474>
+This approach helps analysts understand not only what happened, but also how different security events may be connected.
 
-Neo4j Browser username is `neo4j`; its password is the `NEO4J_PASSWORD` value in `.env`. Service ports bind to loopback by default; optional port overrides are in `.env`.
+## 4. Artificial Intelligence: From Detection to Understanding
 
-When upgrading a database created by the earlier project version, the named MongoDB and Neo4j volumes are retained. Neo4j does not rotate the password in an already-initialized data volume when `NEO4J_PASSWORD` changes. Before starting with an existing volume, set that variable in `.env` to the password already stored by that database; do not reset volumes if you need to preserve existing data.
+SentinelGraph-AI integrates an optional local AI layer through Ollama.
 
-## First administrator login
+Its purpose is to improve the interpretation of security evidence rather than replace the detection engine.
 
-The seeded administrator username is `admin`. Its random initial password is stored as `SEED_ADMIN_PASSWORD` in the local `.env` file. The same file contains the initial `analyst` and `viewer` passwords. The login form does not prefill credentials.
+| AI Capability | Purpose |
+|---|---|
+| Threat Explanation | Explain why an event or alert may be suspicious. |
+| Security Analysis | Interpret available detection evidence. |
+| Investigation Summaries | Produce contextual summaries of security incidents. |
+| Mitigation Recommendations | Suggest possible actions to investigate or reduce exposure. |
+| Security Assistant | Provide a natural-language interface for security-related questions. |
 
-Seed accounts are created only when the users collection is empty. Existing database volumes keep their existing user accounts and passwords; startup does not reset them.
+### Hybrid Intelligence Architecture
 
-## Stop and reset
+The platform separates deterministic security detection from AI-generated interpretation.
 
-Stop the services while preserving database volumes:
-
-```powershell
-.\stop-project.bat
+```mermaid
+flowchart TD
+    A[Security Events] --> B[Detection Engine]
+    B --> C[Structured Alerts]
+    C --> D[Evidence Collection]
+    D --> E{Ollama Available?}
+    E -->|Yes| F[Local LLM Analysis]
+    E -->|No| G[Deterministic Advisory]
+    F --> H[Investigation Insights]
+    G --> H
+    H --> I[Security Analyst]
 ```
 
-To permanently delete MongoDB and Neo4j data, run:
+**Important design principle:** AI-generated explanations are advisory. Actual detection decisions remain grounded in explicit security rules and available evidence.
 
-```powershell
-.\reset-project.bat
+When Ollama is unavailable, the platform provides a clearly identified deterministic, rule-based advisory instead of pretending that an LLM analysis was performed.
+
+## 5. Architecture & Technology Stack
+
+SentinelGraph-AI follows a modular full-stack architecture that separates presentation, application logic, operational data storage, graph investigation, and AI-assisted analysis.
+
+### Technology Stack
+
+| Layer | Technology | Responsibility |
+|---|---|---|
+| Frontend | React 19 | User interface and application components |
+| Language | TypeScript | Type safety and maintainable frontend development |
+| Build Tool | Vite | Frontend development and production builds |
+| Web Server | Nginx | Frontend serving |
+| Backend | Python + FastAPI | Business logic and REST API |
+| Authentication | JWT | Authenticated API access |
+| Authorization | Role-Based Access Control | Permission enforcement |
+| Primary Database | MongoDB | Operational security documents |
+| Graph Database | Neo4j | Threat relationships and graph traversal |
+| AI Integration | Ollama | Local LLM-based analysis |
+| Containerization | Docker | Application service isolation and deployment |
+| Orchestration | Docker Compose | Multi-service architecture |
+
+### High-Level System Architecture
+
+```mermaid
+flowchart TB
+    subgraph CLIENT["Presentation Layer"]
+        UI[React + TypeScript]
+        WEB[Nginx]
+        UI --> WEB
+    end
+
+    subgraph APP["Application Layer"]
+        API[FastAPI REST API]
+        AUTH[JWT + RBAC]
+        LOG[Log Processing]
+        DET[Detection Engine]
+        ALERT[Alert Management]
+        ANALYTICS[Analytics]
+        API --> AUTH
+        API --> LOG
+        API --> DET
+        API --> ALERT
+        API --> ANALYTICS
+    end
+
+    subgraph DATA["NoSQL Data Layer"]
+        MONGO[(MongoDB)]
+        NEO[(Neo4j)]
+    end
+
+    subgraph INTEL["Intelligence Layer"]
+        GRAPH[Graph Investigation]
+        AI[Ollama AI Analysis]
+    end
+
+    WEB --> UI
+    UI --> API
+    LOG --> MONGO
+    DET --> MONGO
+    ALERT --> MONGO
+    ANALYTICS --> MONGO
+    LOG --> NEO
+    ALERT --> NEO
+    NEO --> GRAPH
+    API --> AI
+    GRAPH --> API
+    AI --> API
 ```
 
-The reset script requires typing `DELETE` before it removes volumes. Use it only when you intentionally want to discard all persisted project data.
+## 6. NoSQL Database Architecture
 
-## API overview
+A major architectural decision in SentinelGraph-AI is the use of two complementary NoSQL database technologies.
 
-All versioned routes are under `/api/v1`. The interactive OpenAPI reference is at `/docs` when the backend is running.
+Rather than forcing every type of data into one storage model, the platform assigns each database a responsibility that matches its strengths.
 
-- `/auth`: login, profile, and administrator user management.
-- `/logs`: search, ingest, simulate, and verify log integrity.
-- `/alerts`: list, retrieve, update, fetch evidence, and run detection.
-- `/analytics/dashboard`: dashboard metrics and recent distributions.
-- `/servers`: list and administer monitored assets.
-- `/rules`: list and update detection rules.
-- `/graph`: topology, repeated attackers, blast radius, and attack paths.
-- `/ai`: threat analysis, assistant chat, and analysis history.
+### 6.1 MongoDB — Primary Operational Database
 
-Bearer JWT authentication is required for protected API calls. Role checks are enforced by the backend; hiding controls in the frontend is not the security boundary.
+MongoDB is the primary source of operational application records.
 
-## Testing and local development
+It stores structured and semi-structured security information generated throughout the application lifecycle.
 
-Backend tests:
+| Collection | Purpose |
+|---|---|
+| `users` | User accounts, roles, and authentication information |
+| `servers` | Monitored server inventory |
+| `logs` | Normalized security events |
+| `alerts` | Generated security alerts and investigation state |
+| `detection_rules` | Configurable detection rules |
+| `ai_analyses` | AI-assisted analysis history |
+| Audit records | Tracked administrative and security-related actions |
 
-```powershell
-cd backend
-python -m pytest -q
+**Why MongoDB?**
+
+Security events have different structures depending on their origin. A flexible document model makes it practical to ingest, normalize, store, filter, and retrieve heterogeneous security records.
+
+MongoDB provides the operational persistence layer for the application.
+
+### 6.2 Neo4j — Graph-Based Security Intelligence
+
+Neo4j complements MongoDB by managing relationships between security entities.
+
+| Graph Node | Description |
+|---|---|
+| `IP` | Source or suspicious network address |
+| `User` | Account involved in a security event |
+| `Server` | Infrastructure asset |
+| `Event` | Recorded security activity |
+| `Alert` | Detected security incident |
+
+Example graph relationships:
+
+- `(:IP)-[:TARGETS]->(:User)`
+- `(:User)-[:ACCESSES]->(:Server)`
+- `(:IP)-[:GENERATES]->(:Event)`
+- `(:Event)-[:PRODUCES]->(:Alert)`
+
+**Why Neo4j?**
+
+A document database is appropriate for storing individual security events, but complex relationship traversal requires additional query logic.
+
+Neo4j enables graph-oriented investigation, helping analysts discover connections between apparently unrelated security incidents.
+
+### 6.3 Polyglot Persistence Strategy
+
+```mermaid
+flowchart LR
+    A[Security Events] --> B[FastAPI]
+    B --> C[(MongoDB)]
+    B --> D[(Neo4j)]
+    C --> E[Operational Queries]
+    D --> F[Relationship Analysis]
+    E --> G[Security Intelligence]
+    F --> G
 ```
 
-Or run them without installing Python on Windows after startup:
+| Database | Primary Responsibility |
+|---|---|
+| MongoDB | Document storage and operational queries |
+| Neo4j | Relationship modeling and graph investigation |
 
-```powershell
-docker compose --env-file .env exec backend python -m pytest -q
+This architecture demonstrates **Polyglot Persistence**: using multiple database technologies according to their respective strengths.
+
+## 7. Security Architecture
+
+Security is both the subject of the application and a fundamental requirement of its implementation.
+
+SentinelGraph-AI incorporates several security mechanisms:
+
+| Mechanism | Implementation Purpose |
+|---|---|
+| JWT Authentication | Authenticate users accessing protected resources |
+| Role-Based Access Control | Enforce permissions according to user roles |
+| Password Hashing | Avoid storing passwords in plaintext |
+| Input Validation | Validate API payloads and incoming data |
+| Rate Limiting | Reduce exposure to excessive API requests |
+| Audit Logging | Maintain records of relevant application actions |
+| SHA-256 Integrity Verification | Verify individual log records against their integrity hashes |
+| Environment-Based Secrets | Keep sensitive configuration outside source-controlled files |
+
+### User Roles
+
+| Role | Intended Responsibility |
+|---|---|
+| Administrator | Manage users, infrastructure assets, and detection configuration |
+| Security Analyst | Monitor events, investigate alerts, and analyze threats |
+| Viewer | Access authorized monitoring and analytical information |
+
+Backend authorization is enforced through protected API dependencies and role checks, rather than relying exclusively on frontend visibility.
+
+## 8. Data Processing Lifecycle
+
+The platform follows a structured pipeline to transform raw security events into investigation-ready information.
+
+```mermaid
+flowchart TD
+    A[Simulated Servers and Applications]
+    B[Log Collection]
+    C[Parsing and Normalization]
+    D[MongoDB Storage]
+    E[Detection Rule Evaluation]
+    F[Alert Generation]
+    G[Neo4j Relationship Modeling]
+    H[AI-Assisted Interpretation]
+    I[Dashboard and Investigation]
+
+    A --> B --> C --> D
+    D --> E --> F
+    C --> G
+    F --> G
+    F --> H
+    G --> I
+    H --> I
 ```
 
-Backend smoke/diagnostic harness:
+This pipeline establishes a clear separation between event ingestion, operational persistence, deterministic detection, relationship investigation, and AI-assisted interpretation.
 
-```powershell
-cd ..
-python scripts/verify_system.py
+## 9. Backend API Overview
+
+The backend exposes versioned REST endpoints under `/api/v1`.
+
+| Module | Endpoint | Responsibility |
+|---|---|---|
+| Authentication | `/auth` | Login, user profile, and user administration |
+| Logs | `/logs` | Ingestion, retrieval, simulation, and integrity verification |
+| Alerts | `/alerts` | Alert retrieval, investigation, updates, and detection |
+| Analytics | `/analytics/dashboard` | Security KPIs and event distributions |
+| Servers | `/servers` | Monitored infrastructure management |
+| Rules | `/rules` | Detection rule configuration |
+| Graph | `/graph` | Threat topology, attackers, blast radius, and attack paths |
+| AI | `/ai` | Threat analysis, assistant interactions, and analysis history |
+
+The interactive OpenAPI specification is exposed by FastAPI.
+
+## 10. Analytics & Security Visibility
+
+The dashboard consolidates operational and security information to provide a unified view of the monitored environment.
+
+Key analytical indicators include:
+
+- Total collected security logs.
+- Total generated alerts.
+- Critical and high-severity incidents.
+- Threat severity distribution.
+- Top suspicious IP addresses.
+- Most targeted users and servers.
+- Security events over time.
+- Recent security incidents.
+
+The purpose is to make security activity easier to understand and to help analysts prioritize investigation efforts.
+
+## 11. Project Organization
+
+The application follows a modular repository structure separating backend responsibilities, frontend components, data assets, scripts, and technical documentation.
+
+```text
+SentinelGraph-AI/
+│
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── database/
+│   │   ├── collectors/
+│   │   ├── parsers/
+│   │   ├── detection/
+│   │   ├── graph/
+│   │   ├── ai/
+│   │   ├── models/
+│   │   └── main.py
+│   └── tests/
+│
+├── frontend/
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── layouts/
+│       ├── services/
+│       ├── hooks/
+│       └── types/
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── samples/
+│
+├── scripts/
+├── docs/
+│   ├── architecture/
+│   ├── uml/
+│   └── screenshots/
+│
+├── docker-compose.yml
+├── .env.example
+├── .gitignore
+└── README.md
 ```
 
-Frontend production build:
+## 12. Engineering Principles
 
-```powershell
-cd frontend
-npm ci
-npm run build
-```
+SentinelGraph-AI is designed around the following engineering principles:
 
-The containerized frontend build can also be checked without installing Node.js:
+- **Modularity:** Separate application responsibilities into maintainable components.
+- **Separation of Concerns:** Distinguish data persistence, detection, graph analysis, and AI interpretation.
+- **Polyglot Persistence:** Select database technologies according to data access patterns.
+- **Security by Design:** Integrate authentication, authorization, validation, and auditability.
+- **Explainability:** Keep detection evidence available for analyst investigation.
+- **Graceful Degradation:** Preserve core functionality when the optional AI service is unavailable.
+- **Extensibility:** Allow additional detection rules, log sources, and graph relationships to be introduced.
 
-```powershell
-docker compose --env-file .env build frontend
-```
+## 13. Project Scope & Limitations
 
-For local development outside Docker, configure database URLs and credentials in the environment, run the backend from the project root (`python -m uvicorn backend.app.main:app --reload`), then run `npm run dev` in `frontend`. The Vite dev server proxies `/api` to `http://localhost:8000`.
+SentinelGraph-AI is an academic cybersecurity engineering prototype designed to demonstrate the architecture and implementation of an intelligent log monitoring and threat investigation platform.
 
-## Troubleshooting
+Its current scope includes simulated security telemetry, rule-based detection, graph-based investigation, and optional local AI analysis.
 
-- **Docker daemon unavailable:** Start Docker Desktop and wait for it to finish starting before rerunning the batch file.
-- **Service did not become healthy:** Inspect `docker compose --env-file .env ps` and `docker compose --env-file .env logs --tail=100`.
-- **Port already in use:** Change the relevant `*_PORT` value in `.env`, then rerun startup.
-- **Login rejected on a new install:** Use `admin` and the `SEED_ADMIN_PASSWORD` value from `.env`. Existing database volumes are not re-seeded over existing users.
-- **Ollama advisory fallback:** The core app remains available. Start Ollama on the host, pull the configured model, and confirm `OLLAMA_HOST` in `.env`.
-- **Neo4j cannot authenticate after changing its password:** Neo4j stores its initialized password in its data volume. Changing `.env` does not rotate that stored credential; either restore the original password or deliberately reset volumes.
+The project does not claim to be a certified enterprise SIEM, a replacement for commercial threat intelligence platforms, or a production-hardened security monitoring solution.
 
-## Known limitations
+In particular:
 
-- The project uses deterministic sample threat indicators and demo telemetry, not a continuously updated threat-intelligence feed.
-- The offline AI fallback is rule-grounded advisory text, not an LLM or a substitute for analyst review.
-- The in-memory database/graph adapters are for tests and local development only. Production Compose startup requires MongoDB and Neo4j connectivity.
-- MongoDB has no database-level authentication in this single-machine academic configuration; its host port is bound to loopback. Do not expose the service or use this setup for production data.
-- This academic project does not claim compliance certification, immutable storage, or production-grade multi-tenant isolation.
+- Sample telemetry is illustrative, not live threat intelligence.
+- Detection rules are configurable application logic, not a complete intrusion detection system.
+- AI-generated recommendations require human validation.
+- The fallback advisory is deterministic and is not equivalent to LLM inference.
+- Production deployment would require additional infrastructure hardening, access controls, operational monitoring, and security validation.
+
+Clearly defining these limitations is essential to evaluating the platform accurately.
+
+## 14. Future Development Opportunities
+
+Potential extensions include:
+
+| Area | Possible Enhancement |
+|---|---|
+| Log Collection | Integration with real operating system and application log sources |
+| Threat Intelligence | External IP reputation and threat intelligence feeds |
+| Detection | Advanced anomaly detection and behavioral analytics |
+| Correlation | More sophisticated multi-event attack correlation |
+| Graph Analysis | Historical attack-path reconstruction |
+| AI | Evidence-grounded investigation using retrieval-augmented generation |
+| Monitoring | Real-time event streaming and notification mechanisms |
+| Scalability | Distributed ingestion and processing architecture |
+| Security | Additional hardening, automated security testing, and deployment controls |
+
+These directions provide opportunities to evolve the prototype into a more comprehensive security analytics platform.
+
+## 15. Project Information
+
+| Attribute | Description |
+|---|---|
+| Project | SentinelGraph-AI |
+| Category | Cybersecurity / Security Information and Event Management |
+| Architecture | Full-Stack, Multi-Database NoSQL |
+| Primary Database | MongoDB |
+| Graph Database | Neo4j |
+| Backend | Python / FastAPI |
+| Frontend | React / TypeScript |
+| AI Integration | Ollama |
+| Deployment Technology | Docker / Docker Compose |
+| Academic Context | 4IIR — NoSQL Application Development |
+
+---
+
+## Final Perspective
+
+Security monitoring should not stop at collecting logs or generating alerts.
+
+The real value comes from understanding the relationships between events, identifying suspicious behavior, connecting evidence, and supporting informed security decisions.
+
+**SentinelGraph-AI brings together document-oriented storage, graph intelligence, deterministic threat detection, and local AI-assisted analysis to demonstrate how raw security telemetry can become structured, connected, and actionable cyber intelligence.**
+
+<p align="center">
+  **From Security Events to Threat Intelligence.**
+  <br/>
+  **From Isolated Logs to Connected Insights.**
+</p>
+
+---
+
+*SentinelGraph-AI — An academic project exploring the intersection of NoSQL engineering, cybersecurity, graph analytics, and artificial intelligence.*
