@@ -12,6 +12,7 @@ export async function request<T>(endpoint: string, options: RequestInit = {}): P
     headers.set('Authorization', `Bearer ${token}`);
   }
 
+  
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers,
