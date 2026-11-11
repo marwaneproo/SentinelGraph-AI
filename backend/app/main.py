@@ -8,6 +8,7 @@ from backend.app.db.neo4j import neo4j_manager
 from backend.app.db.seed_data import seed_all
 from backend.app.api.router import api_router
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     siem_logger.info("Initializing SentinelGraph-AI Engine...")
