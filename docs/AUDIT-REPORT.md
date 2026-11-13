@@ -2,6 +2,7 @@
 
 ## Findings and severity
 
+
 | Severity | Finding | Resolution |
 |---|---|---|
 | High | The backend image copied `app/` into `/app` but launched `backend.app.main`, so the image import path did not match its filesystem. | Docker build layout now preserves `backend.app`; the image runs as a non-root user and has a health check. |
