@@ -8,6 +8,7 @@ if (-not (Test-Path $examplePath)) {
     throw "Missing .env.example. Restore the project configuration file and retry."
 }
 
+
 if (-not (Test-Path $envPath)) {
     Copy-Item $examplePath $envPath
 }
@@ -23,6 +24,7 @@ function New-Secret([int]$byteCount) {
     }
     return ([BitConverter]::ToString($bytes) -replace "-", "").ToLowerInvariant()
 }
+
 
 $secretKeys = @(
     "NEO4J_PASSWORD",
