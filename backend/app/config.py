@@ -19,6 +19,7 @@ class Settings(BaseModel):
     NEO4J_USER: str = os.getenv("NEO4J_USER", "neo4j")
     NEO4J_PASSWORD: str = os.getenv("NEO4J_PASSWORD", "development-only")
     
+    
     # JWT & Auth
     JWT_SECRET: str = os.getenv(
         "JWT_SECRET", "development-only-secret-not-for-production-use"
