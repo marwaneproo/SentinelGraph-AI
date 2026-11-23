@@ -27,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return null;
     }
   });
+  
 
   useEffect(() => {
     const handleUnauthorized = () => {
