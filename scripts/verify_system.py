@@ -59,6 +59,7 @@ async def run_diagnostics():
         "username": "alice.security",
         "details": {"client": "curl/8.1"}
     }
+    
     ingested = await log_service.ingest_log(log_doc)
     assert "integrity_hash" in ingested
     v_res = await log_service.verify_log(ingested["_id"])
